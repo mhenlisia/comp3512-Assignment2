@@ -1,0 +1,43 @@
+body {
+    margin: 40px;
+    background-color: #383838;
+    font-family: Arial;
+    font-size: 0.8rem;
+    color: #cdcdcd;
+
+}
+
+.container {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 20rem 40rem auto;
+  color:#cdcdcd;
+  background-color: #383838;
+}
+
+.box {
+  background-color: #cdcdcd;
+  color: black;
+  border-radius: 5px;
+  padding: 2px;
+  font-size: 150%;
+  align:center;
+}
+.tabeOfContents {
+  grid-column: 1 / span 3;
+  grid-row: 1 ;
+}
+.menu td a{
+    text-align: right;
+}
+.aboutUs{
+    grid-column: 1 / span 3;
+    grid-row: 2 / span 3;
+}
+.menuOptions{
+  position: relative;
+  float: right;
+}
+.heading h2{
+  padding: 0px 10px 0px 0px;
+}
