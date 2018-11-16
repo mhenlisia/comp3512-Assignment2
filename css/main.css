@@ -27,13 +27,36 @@ body {
   grid-column: 1 / span 3;
   grid-row: 1 ;
 }
-.menu td a{
-    text-align: right;
+.menuOptions{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  display:block;
+}
+.menuOptions li h2{
+  float:left;
+}
+.menuOptions li a{
+  padding: 5px;
+  float:right;
 }
 .aboutUs{
     grid-column: 1 / span 3;
     grid-row: 2 / span 3;
 }
+.aboutUs table tr td{
+  align:center;
+}
+.aboutUs table{
+  align:center;
+}
+
+/*
+.menu td a{
+    text-align: right;
+}
+
 .menuOptions{
   position: relative;
   float: right;
@@ -41,3 +64,24 @@ body {
 .heading h2{
   padding: 0px 10px 0px 0px;
 }
+*/
+.galleries {
+  grid-column: 1 / span 1;
+  grid-row: 2 / span 2;
+}
+
+.artists {
+  grid-column: 2 / span 1;
+    grid-row: 2 / span 1
+}
+
+.genres{
+  grid-column: 2 / span 1;
+  grid-row: 3 ;
+}
+ul#galleryList li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
