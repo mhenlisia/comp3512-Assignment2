@@ -27,7 +27,9 @@ require_once 'db-functions.php';
         
         <div class="box galleries">
             <ul id="galleryList">
-                <?php outputGalleries(); ?>
+                <?php outputGalleries();
+                    //testGallery();
+                ?>
             </ul> 
         </div>
         

@@ -1,5 +1,5 @@
 <?php 
-
+    
     function tableOfContents(){
         echo '<ul class = "menuOptions">
                     <li><h2>Assignment#2</h2></li>
@@ -83,6 +83,21 @@ function outputGenres(){
     }
 }
 
+//i have made changes to the original function writen by Megan. this returns artist by ID but, 
+// if there is not artistID it will just return all artists.
+// btw, we have to make sure to encode the result before returning it in the functions. 
+// then when we get it in the API files, we decode it. 
+
+//oh i see
+// he covered encoding it 
+//you have to write another function decoding it?
+
+//k the file directory was wrong before i fixed it lol all g i did the same thing, luckily 
+//the error tells you alot
+
+//rn theres this error
+//ill msg you over messenger
+
 function getArtistById(){
     if(isset($_GET['ArtistID'])){
         try{
@@ -90,24 +105,54 @@ function getArtistById(){
             $sql = "select ArtistID, FirstName, LastName, Nationality, Gender, YearOfBirth, YearOfDeath, Details from Artists where ArtistID=" . $_GET['ArtistID'];
 
             $result = runQuery($connection, $sql, null);
+            //return $result;
             foreach($result as $r){
-                ouputSingleArtist();
+                return $r;
+                //ouputSingleArtist();
             }
         }
         catch (PDOException $e) {
             die( $e->getMessage() );
         }
     }
+    else {
+        try{
+            $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
+            $sql = 'select ArtistID, FirstName, LastName, Nationality, Gender, YearOfBirth, YearOfDeath, Details from Artists';
+            $result = runQuery($connection, $sql, null);
+            return $result;
+        }
+        catch (PDOException $e) {
+            die( $e->getMessage() );
+        }
+    }
 }
+
+function getArtists() {
+    try {
+        $pdo = new PDO(DB)
+    }
+}
+
 function ouputSingleArtist(){
     echo "<h1>" . $r['FirstName'] . " " . $r['LastName'] . "</h1>";
 }
 
 function getPaintingsByArtist(){
+    $sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName, GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= " . $_GET['ArtistID'];
+    getPaintings($sql);
+}
+
+function getAllPaintings(){
+    $sql = "SELECT*FROM Paintings";
+    getPaintings($sql);
+}
+
+function getPaintings($sql){
     if(isset($_GET['ArtistID'])){
     try{
      $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
-     $sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName, GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= " . $_GET['ArtistID'];
+     //$sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName, GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= " . $_GET['ArtistID'];
 
      $result = runQuery($connection, $sql, null);
      return $result;
@@ -117,6 +162,7 @@ function getPaintingsByArtist(){
    }
     }
 }
+
 function ouputPaintingTable(){
     $paintings = getPaintingsByArtist();
     foreach($paintings as $p){
@@ -128,5 +174,12 @@ function ouputPaintingTable(){
         echo "</tr>";
     }
 }
+
+// function testGallery(){
+//     include '../php/functions.inc.php';
+//     header('Content-Type: application/json');
+//     $string = json_encode(getAllGalleries());
+//     echo $string;
+// }
 
 ?>
