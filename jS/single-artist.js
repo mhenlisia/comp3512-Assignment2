@@ -31,7 +31,7 @@ window.addEventListener('load', function(){
             table.appendChild(row);
             
             let picture = document.createElement("td");
-            picture.innerHTML = "<img src = '../images/works/square-medium/" + p.ImageFileName + ".jpg'>";
+            picture.innerHTML = "<img src = '../images/works/square-medium/" + p.ImageFileName + ".jpg'><div id = 'hover-image'></div>";
             row.appendChild(picture);
             mouseEnterPic(p);
             mouseLeavePic();
@@ -113,24 +113,29 @@ window.addEventListener('load', function(){
     
     function mouseEnterPic(picture){
         let item = document.querySelector("#artistPaintingTable img");
-        item.addEventListener("onmouseover", function(){
+        item.onmouseover = function(){
             let hoverItem = document.getElementById("#hover-image");
             hoverItem.style.height = "400px";
             let newImg = document.createElement("img");
             newImg.setAttribute("src", "<img src = '../images/works/square-medium/" + picture.ImageFileName + ".jpg'>");
             hoverItem.appendChild(newImg);
-        });
+        };
+        
     }
     
     function mouseLeavePic(){
         let item = document.querySelector("#artistPaintingTable img");
-        item.addEventListener("onmouseout", function(){
+        item.onmouseout = function(){
             let hoverItem = document.querySelector("#hover-image");
             hoverItem.style.display = "none";
-        });
+        };
+        
     }
     
     function mouseMovePic(){
-        
+        let item = document.querySelector("#artistPaintingTable img");
+        item.onmousemove = function(){
+            
+        };
     }
 });

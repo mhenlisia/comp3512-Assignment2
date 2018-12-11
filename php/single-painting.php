@@ -37,6 +37,11 @@ include '../php/page-functions.inc.php';
         <div class= "box paintingcolorScheme">
             
         </div>
+        <div class= "box paintingFavoritesOptions">
+            <?php
+                printFavoritesInfo();
+            ?>
+        </div>
         <div class= "box paintingReview">
             <?php
                 paintingRatingBar();

@@ -51,11 +51,26 @@ function emailPassBox(){
 }
 
 function registerLink(){
+    if( isset($_SESSION['user_id'])){
+        $user_id = $_sSESSION['user_id'];
+        $user = in_array_r($user_id,$users);
+        
+        checkUser();
+    }
+}
+
+function checkUser(){
+    if(empty($user)){
+        session_destroy();
+        
+    }else{
+        include('main.php');
+    }
     
 }
 
     
-}
+
     
 
 

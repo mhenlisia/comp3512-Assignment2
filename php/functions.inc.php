@@ -183,6 +183,4 @@ function outputPaintingTable(){
 //     echo $string;
 // }
 
-
-
 ?>

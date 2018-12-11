@@ -55,8 +55,8 @@ function retrievePaintings(){
             //Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= "
             //. $_GET['PaintingID'];
             
-            $sql = "SELECT Artists.FirstName, Artists.LastName, PaintingID,  Paintings.ArtistID,  GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, 
-                    Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings, Artists where PaintingID= " . $_GET['PaintingID'] . " AND Artists.ArtistID = Paintings.ArtistID";
+            $sql = "SELECT Artists.FirstName, Artists.LastName, PaintingID,  Paintings.ArtistID, Paintings.GalleryID, Galleries.GalleryName, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, 
+                    Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings, Artists, Galleries where PaintingID= " . $_GET['PaintingID'] . " AND Artists.ArtistID = Paintings.ArtistID AND Paintings.GalleryID = Galleries.GalleryID";
             
             $result = runQuery($connection, $sql, null);
         
@@ -74,7 +74,7 @@ function outputPaintingImg(){
     $result = retrievePaintings();
     foreach($result as $r){
         //$string = json_encode($r);
-        echo "<img src='/images/works/square-medium/" . $r['ImageFileName'] . ".jpg'>";
+        echo "<img style='height: 100%; width: 100%; object-fit: contain' src='/images/works/square-medium/" . $r['ImageFileName'] . ".jpg'>";
     }
 }
 function outputPaintingInfo(){
@@ -82,8 +82,39 @@ function outputPaintingInfo(){
     foreach($result as $r){
         echo "<section id='paintingInfoTitle'>";
         echo "<h1>" . $r['Title'] . "</h1>";
-        echo "<h3> Artist: " . $r['FirstName'] . " " . $r['LastName'] . "</h3>";
-        echo "<table>";
+        //echo "<h3> Artist: " . $r['FirstName'] . " " . $r['LastName'] . "</h3>";
+        
+        echo "<table id=paintingInfoTable>";
+        
+        echo    "<a href='/php/single-artist.php?ArtistID=" . $r['ArtistID'] . "'><tr>
+                    <td id='paintingInfoHead'>Artist: </td>";
+        if ($r['ArtistID'] != null) {
+            echo    "<td>" . $r['FirstName'] . " " . $r['LastName'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr></a>";
+        
+        echo    "<a href='/php/single-gallery.php?GalleryID=" . $r['GalleryID'] . "'><tr>
+                    <td id='paintingInfoHead'>Gallery: </td>";
+        if ($r['GalleryID'] != null) {
+            //REPLACE THIS WITH GALARY NAME
+            echo    "<td>". $r['GalleryID'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr></a>";
+        
+        echo    "<a href='/php/single-gallery.php?GenreID=" . $r['GenreID'] . "'>
+                <tr>
+                    <td id='paintingInfoHead'>Genre: </td>";
+        if ($r['GenreID'] != null) {
+            echo    "<td>" . $r['FirstName'] . " " . $r['LastName'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr>
+                </a>";
         
         echo    "<tr>
                     <td id='paintingInfoHead'>Cost: </td>";
@@ -121,14 +152,12 @@ function outputPaintingInfo(){
         }
         echo    "</tr>
              </table>";
-        //$r['YearOfWork']
-        
     }
 }
 
 function paintingRatingBar(){
     //https://stackoverflow.com/questions/46741025/simple-rating-star-css
-    echo "<section><p1>Rate:";
+    echo "<section><p>Rate: </p>";
     echo '<fieldset class="rating">
                 <input type="radio" id="5star" name="rating" value="5" />
                 <label class="full" for="5star" title="Excellent"></label>
@@ -160,7 +189,16 @@ function paintingRatingBar(){
                 <input type="radio" id="halfstar" name="rating" value="0.5" />
                 <label class="half" for="halfstar" title="Worst"></label>
             </fieldset>';
+    echo "</section>";
 }
+
+function printFavoritesInfo(){
+    
+    
+    echo "<a href='/php/add_to_favorites.php?PaintingID=" . $_GET['PaintingID'] . "'><p id='addToFavBtn'> Add To Favorites </p></a>";
+    echo "<p id='numbOfFav'> You have " . count($_SESSION['favorite']) . " favorite paintings</p>";
+}
+
 
 function outputGalleryInfo(){
     if(isset($_GET['GalleryID'])){
@@ -181,5 +219,6 @@ function outputGalleryInfo(){
         }
     }
 }
+
 
 ?>

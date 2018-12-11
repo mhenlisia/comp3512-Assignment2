@@ -61,6 +61,7 @@ window.addEventListener('load', function() {
             item.innerHTML = "<a href='single-artist.php?ArtistID=" + a.ArtistID + "'>" +"<figure><br><img src = '../images/artists/square/" + a.ArtistID + ".jpg'></br></figure>" + a.FirstName + " " + a.LastName + "</a>";
             list.appendChild(item);
         }
+        //contentSlider();
     }
     
     function createGenreList(genres){
@@ -73,5 +74,43 @@ window.addEventListener('load', function() {
             
         }
     }
+  
+//https://www.youtube.com/watch?v=C9EWifQ5xqA    
+    function contentSlider(){
+        const slide = document.querySelector("#artist-list li");
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        
+        
+        slide.addEventListener('mousedown',(e) =>{
+            isDown = true;
+            slide.classList.add('active');
+            startX= e.pageX - slider.offsetLeft;
+            scrollLeft = slide.scrollLeft;
+        })
+        
+        slide.addEventListener('mouseleave',() =>{
+            isDown = false;
+        })
+        
+        slide.addEventListener('mouseup',() =>{
+            isDown = false;
+            slide.classList.add('active');
+        })
+        
+        slide.addEventListener('mousemove',(e) =>{
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slide.offsetLeft;
+            const move = x - startX;
+            slide.scrollLeft = scrollLeft -move;
+            console.log(move);
+            
+        })
+    }
+    
+
     
 });

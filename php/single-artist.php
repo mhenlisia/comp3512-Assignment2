@@ -33,7 +33,7 @@ include '../php/page-functions.inc.php';
             <section>
                 <h2>Paintings</h2>  
                 <table id="artistPaintingTable">
-                    <!--<div id = "hover-image"></div>-->
+                   <!-- <div id = "hover-image"></div>-->
                      <tr>
                          <th></th>
                          <th id = "pArtist"><a href = "">Artist</a></th>
