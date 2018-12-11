@@ -6,8 +6,8 @@
         echo '<div class="menuOptions" id-="menuOptions">
                 <a href="main.php" class="active">Home</a>
                 <a href="aboutUs.php">About Us</a>
-                <a href="#">Favourites</a>
-                <a href="#">Login</a>
+                <a href="favourites.php">Favourites</a>
+                <a href="login.php">Login</a>
                 </div>';
     }
     
@@ -94,8 +94,14 @@ function getAllGenres(){
 function outputGenres(){
     $genres = getAllGenres();
     foreach($genres as $g){
-        echo "<figure><img src= '/images/genres/genres/square-medium/" . $g['GenreID'] . ".jpg'><figcaption>
-        <a href='/php/single-genre.php?GenreID=" . $g['GenreID'] . "'>" . $g['GenreName'] . "</a></figcaption></figure>";
+        //echo "<figure><img src= '/images/genres/genres/square-medium/" . $g['GenreID'] . ".jpg'><figcaption>
+        //<a href='/php/single-genre.php?GenreID=" . $g['GenreID'] . "'>" . $g['GenreName'] . "</a></figcaption></figure>";
+        
+        echo "<a href='/php/single-genre.php?GenreID=" . $g['GenreID'] . "'> 
+                    <figure>
+                        <img src= '/images/genres/genres/square-medium/" . $g['GenreID'] . ".jpg'><br> " . $g['GenreName'] . 
+                    "</br></figure>
+            </a>";
         
         
     }
@@ -133,13 +139,14 @@ function ouputSingleArtist(){
 }
 
 function getPaintingsByArtist(){
-    $sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName, GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= " . $_GET['ArtistID'];
+    $sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName, GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= "  . $_GET['ArtistID'];
     getPaintings($sql);
 }
 
 function getAllPaintings(){
     $sql = "SELECT*FROM Paintings";
-    getPaintings($sql);
+    return getPaintings($sql);
+    
 }
 
 function getPaintings($sql){
@@ -157,11 +164,11 @@ function getPaintings($sql){
     }
 }
 
-function ouputPaintingTable(){
+function outputPaintingTable(){
     $paintings = getPaintingsByArtist();
     foreach($paintings as $p){
         echo "<tr>";
-        echo "<td><img src='/images/works/square-medium/" . $p['ImageFileName'] . ".jpg'></td>";
+        echo "<td> <img src='/images/works/square-medium/" . $p['ImageFileName'] . ".jpg'></td>";
         echo "<td>" . $p['Title'] . "</td>";
         echo "<td>" . $p['FirstName'] . " " . $p['LastName'] . "</td>";
         echo "<td>" . $p['YearOfWork'] . "</td>";

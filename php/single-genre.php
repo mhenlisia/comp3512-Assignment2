@@ -1,6 +1,7 @@
 <?php 
 include '../php/functions.inc.php';
 include '../php/page-functions.inc.php';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,14 +33,15 @@ include '../php/page-functions.inc.php';
         <div class = "box paintings">
             <section>
                 <h2>Paintings</h2>  
-                <table id="paintingTable">
+                <table id="genrePaintingTable">
+                    <div id = "hover-image"></div>
                      <tr>
                          <th></th>
                          <th id = "pArtist"><a href = "">Artist</a></th>
                          <th id="pTitle"><a href = "">Title</a></th> 
                          <th id = "pYear"><a href = "">Year</a></th>
                      </tr>
-                     
+                     <?php //outputPaintingTable(); ?>
                  </table> 
             </section>
         </div>
@@ -48,5 +50,6 @@ include '../php/page-functions.inc.php';
     </main>
     
 </body>
-    
+    <script src="../jS/single-painting.js"></script>
+    <script src="../jS/single-genre.js"></script> 
 </html>

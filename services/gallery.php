@@ -7,9 +7,13 @@ include '../php/config.inc.php';
 header('Content-Type: application/json');
 
 $string = getAllGalleries();
-foreach($string as $r) {
-    $string = json_encode($r);
-    echo $string;
-}
+
+$data = $string->fetchAll();
+echo json_encode($data);
+
+//foreach($string as $r) {
+//    $string = json_encode($r);
+//    echo $string;
+//}
 
 ?>

@@ -22,7 +22,7 @@ include '../php/page-functions.inc.php';
                 <?php tableOfContents() ?>
         </div>
         
-        <div class="box artist">
+        <div class="box artist-info">
             <section>
                 <?php outputArtistInfo(); ?>
                 
@@ -32,21 +32,22 @@ include '../php/page-functions.inc.php';
         <div class = "box paintings">
             <section>
                 <h2>Paintings</h2>  
-                <table id="paintingTable">
+                <table id="artistPaintingTable">
+                    <!--<div id = "hover-image"></div>-->
                      <tr>
                          <th></th>
                          <th id = "pArtist"><a href = "">Artist</a></th>
                          <th id="pTitle"><a href = "">Title</a></th> 
                          <th id = "pYear"><a href = "">Year</a></th>
                      </tr>
-                     <?php //outputPaintingTable(); ?>
                  </table> 
             </section>
         </div>
         
         
     </main>
-<script src="../js/single-artist.js"></script>    
+<!-- <script src="../jS/main-page.js"></script> -->
+<script src="../jS/single-artist.js"></script> 
 </body>
     
 </html>

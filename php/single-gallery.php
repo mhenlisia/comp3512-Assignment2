@@ -31,18 +31,37 @@ include '../php/page-functions.inc.php';
         
         <div class = "box map">
             <section>
-              <div id="map"></div>
+              <div id="map">
+                  
+                  
+                  
+              </div>
             </section>
         </div>
         
         <div class = "box paintings">
-            <?php //outputGenres(); ?>
+            <section>
+                <h2>Paintings</h2>  
+                <table id="galleryPaintingTable">
+                    <div id = "hover-image"></div>
+                     <tr>
+                         <th></th>
+                         <th id = "pArtist"><a href = "">Artist</a></th>
+                         <th id="pTitle"><a href = "">Title</a></th> 
+                         <th id = "pYear"><a href = "">Year</a></th>
+                     </tr>
+                     
+                 </table> 
+            </section>
         </div>
         
     </main>
 
-<script src="../js/main-page.js"></script>
+<script src="../jS/single-gallery.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJxTHnrmTQ1QWrMZmiDniuyMestritw2o&callback=initMap"
+    async defer></script>
 </body>
     
 </html>
+
     

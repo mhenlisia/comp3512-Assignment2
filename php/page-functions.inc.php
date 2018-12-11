@@ -44,6 +44,124 @@ function outputGenreInfo(){
     }
 }
 
+function retrievePaintings(){
+    try {
+        if(isset($_GET['PaintingID'])){
+            $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
+            
+            //$sql = "SELECT PaintingID, Paintings.ArtistID AS ArtistID, FirstName, LastName,
+            //GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, 
+            //CopyrightText, Description, Excerpt, YearOfWork, Width, Height, Medium, 
+            //Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings INNER JOIN Artists ON Paintings.ArtistID = Artists.ArtistID WHERE ArtistID= "
+            //. $_GET['PaintingID'];
+            
+            $sql = "SELECT Artists.FirstName, Artists.LastName, PaintingID,  Paintings.ArtistID,  GalleryID, ImageFileName, Title, ShapeID, MuseumLink, AccessionNumber, CopyrightText, Description, Excerpt, YearOfWork, 
+                    Width, Height, Medium, Cost, MSRP, GoogleLink, GoogleDescription, WikiLink FROM Paintings, Artists where PaintingID= " . $_GET['PaintingID'] . " AND Artists.ArtistID = Paintings.ArtistID";
+            
+            $result = runQuery($connection, $sql, null);
+        
+            //$data = $result->fetchAll();
+            //echo json_encode($data);
+            return $result;
+        }
+    }
+    catch (PDOException $e) {
+        die( $e->getMessage() );
+    }
+}
+
+function outputPaintingImg(){
+    $result = retrievePaintings();
+    foreach($result as $r){
+        //$string = json_encode($r);
+        echo "<img src='/images/works/square-medium/" . $r['ImageFileName'] . ".jpg'>";
+    }
+}
+function outputPaintingInfo(){
+    $result = retrievePaintings();
+    foreach($result as $r){
+        echo "<section id='paintingInfoTitle'>";
+        echo "<h1>" . $r['Title'] . "</h1>";
+        echo "<h3> Artist: " . $r['FirstName'] . " " . $r['LastName'] . "</h3>";
+        echo "<table>";
+        
+        echo    "<tr>
+                    <td id='paintingInfoHead'>Cost: </td>";
+        if ($r['Cost'] != null) {
+            echo    "<td>$". $r['Cost'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr>";
+        
+        echo    "<tr>
+                    <td id='paintingInfoHead'>Year of work: </td>";
+        if ($r['YearOfWork'] != null) {
+            echo    "<td>". $r['YearOfWork'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr>";
+        
+        echo    "<tr>
+                    <td id='paintingInfoHead'>Medium: </td>";
+        if ($r['Medium'] != null) {
+            echo    "<td>". $r['Medium'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }            
+        echo    "</tr>";
+        
+        echo    "<tr>
+                    <td style='vertical-align:top', id='paintingInfoHead' > Description: </td>";
+        if ($r['Description'] != null) {
+            echo    "<td>" . $r['Description'] . "</td>";
+        } else {
+            echo    "<td>Currently Unavailable </td>";
+        }
+        echo    "</tr>
+             </table>";
+        //$r['YearOfWork']
+        
+    }
+}
+
+function paintingRatingBar(){
+    //https://stackoverflow.com/questions/46741025/simple-rating-star-css
+    echo "<section><p1>Rate:";
+    echo '<fieldset class="rating">
+                <input type="radio" id="5star" name="rating" value="5" />
+                <label class="full" for="5star" title="Excellent"></label>
+                
+                <input type="radio" id="4halfstar" name="rating" value="4.5" />
+                <label class="half" for="4halfstar" title="Good"></label>
+                
+                <input type="radio" id="4star" name="rating" value="4" />
+                <label class="full" for="4star" title="Pretty good"></label>
+                
+                <input type="radio" id="3halfstar" name="rating" value="3.5" />
+                <label class="half" for="3halfstar" title="Nice"></label>
+                
+                <input type="radio" id="3star" name="rating" value="3" />
+                <label class="full" for="3star" title="Ok"></label>
+
+                <input type="radio" id="2halfstar" name="rating" value="2.5" />
+                <label class="half" for="2halfstar" title="Kinda bad"></label>
+
+                <input type="radio" id="2star" name="rating" value="2" />
+                <label class="full" for="2star" title="Bad"></label>
+
+                <input type="radio" id="1halfstar" name="rating" value="1.5" />
+                <label class="half" for="1halfstar" title="Meh"></label>
+
+                <input type="radio" id="1star" name="rating" value="1" />
+                <label class="full" for="1star" title="Umm"></label>
+
+                <input type="radio" id="halfstar" name="rating" value="0.5" />
+                <label class="half" for="halfstar" title="Worst"></label>
+            </fieldset>';
+}
+
 function outputGalleryInfo(){
     if(isset($_GET['GalleryID'])){
         try{

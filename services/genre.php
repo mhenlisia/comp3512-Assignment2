@@ -7,9 +7,12 @@ require_once '../php/config.inc.php';
 header('Content-Type: application/json');
 
 $string = getAllGenres();
-foreach($string as $r) {
-    $string = json_encode($r);
-    echo $string;
-}
+
+$data = $string->fetchAll();
+echo json_encode($data);
+//foreach($string as $r) {
+//    $string = json_encode($r);
+//    echo $string;
+//}
 
 ?>

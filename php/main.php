@@ -27,23 +27,26 @@ require_once 'db-functions.php';
         </div>
         
         <div class="box galleries">
-            <img src="/images/lg.circle-slack-loading-icon.gif" id="loading-gif">
+            <section>
+            <!--<img src="/images/lg.circle-slack-loading-icon.gif" id="loading-gif">-->
             <ul id="galleryList">
-                
-            </ul> 
+            </ul>
+            </section>
         </div>
         
         <div class = "box artists">
-            
-                
-                <?php outputArtists();
-                    //testGallery();
-                ?>
-            
+            <section>
+                <ul id = "artist-list">
+                </ul>
+            </section>
         </div>
         
         <div class = "box genres">
-            <?php outputGenres(); ?>
+            <section>
+                <ul id = "genre-list">
+                </ul> 
+            <?php //outputGenres(); ?>
+            </section>
         </div>
         
     </main>

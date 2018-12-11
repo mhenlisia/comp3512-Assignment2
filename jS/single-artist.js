@@ -1,17 +1,21 @@
 window.addEventListener('load', function(){
-    const api = '../services/painting.php?ArtistID=1';
+    //these lines of code get the ArtistID from the query string and where taken from https://www.codexworld.com/how-to/get-query-string-from-url-javascript/
+    var urlParams = new URLSearchParams(location.search);
+    var queryStringVal = urlParams.get('ArtistID');
+    console.log(queryStringVal);
+    
+    const api = "/services/painting.php?ArtistID=" + queryStringVal;
     
     fetch(api)
     .then(function(response){
         return response.json();
     })
     .then(function(data){
+        console.log("data");
         createPaintingTable(data);
     });
     
     function createPaintingTable(paintings){
-        
-        
         let artist = document.querySelector("#pArtist");
         sortByArtist(artist);
         
@@ -21,7 +25,7 @@ window.addEventListener('load', function(){
         let year = document.querySelector("#pYear");
         sortByYear(year);
         
-        let table = document.querySelector("#paintingTable");
+        let table = document.querySelector("#artistPaintingTable");
         for (let p of paintings){
             let row = document.createElement("tr");
             table.appendChild(row);
@@ -29,24 +33,31 @@ window.addEventListener('load', function(){
             let picture = document.createElement("td");
             picture.innerHTML = "<img src = '../images/works/square-medium/" + p.ImageFileName + ".jpg'>";
             row.appendChild(picture);
+            mouseEnterPic(p);
+            mouseLeavePic();
             
             let name = document.createElement("td");
             name.textContent = p.LastName;
             row.appendChild(name);
             
             let picTitle = document.createElement("td");
-            picTitle.innerHTML = "<a href=''>" + p.Title + "</a>"
-            //picTitle.textContent = p.Title;
+            picTitle.textContent = p.Title;
             row.appendChild(picTitle);
             
             let picYear = document.createElement("td");
             picYear.textContent = p.YearOfWork;
             row.appendChild(picYear);
             
-            tableSort(1);
+            mouseEnterPic(picture);
+            
+            row.addEventListener('click', function() {
+                window.location.href = "../php/single-painting.php?PaintingID=" + p.PaintingID;
+            });
+            
+            //tableSort(1);
         }
     }
-    
+
     //event handler to sort by artist name
     function sortByArtist(artistHeading){
         artistHeading.addEventListener("click", function(e){
@@ -98,5 +109,28 @@ window.addEventListener('load', function(){
                 switching = true;
             }
         }
+    }
+    
+    function mouseEnterPic(picture){
+        let item = document.querySelector("#artistPaintingTable img");
+        item.addEventListener("onmouseover", function(){
+            let hoverItem = document.getElementById("#hover-image");
+            hoverItem.style.height = "400px";
+            let newImg = document.createElement("img");
+            newImg.setAttribute("src", "<img src = '../images/works/square-medium/" + picture.ImageFileName + ".jpg'>");
+            hoverItem.appendChild(newImg);
+        });
+    }
+    
+    function mouseLeavePic(){
+        let item = document.querySelector("#artistPaintingTable img");
+        item.addEventListener("onmouseout", function(){
+            let hoverItem = document.querySelector("#hover-image");
+            hoverItem.style.display = "none";
+        });
+    }
+    
+    function mouseMovePic(){
+        
     }
 });
