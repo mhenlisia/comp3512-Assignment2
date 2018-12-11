@@ -6,11 +6,9 @@ include '../php/config.inc.php';
 
 header('Content-Type: application/json');
 
-$string = json_decode(getAllArtists());//json_encode(getArtistById());
-echo $string;
-
-
-
-//its coming up with an some output now, take a look
-
+$string = getArtists();
+foreach($string as $r) {
+    $string = json_encode($r);
+    echo $string;
+}
 ?>

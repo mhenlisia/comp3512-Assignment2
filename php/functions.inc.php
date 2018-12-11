@@ -1,16 +1,16 @@
 <?php 
+//include '../php/config.inc.php';
+//include '../php/db-functions.php';
     
     function tableOfContents(){
-        echo '<ul class = "menuOptions">
-                    <li><h2>Assignment#2</h2></li>
-                    <li><a href="main.php">Home</a> </li>
-                    <li><a href="aboutUs.php">About Us</a></li>
-                    <li><a href="#">Favourites</a></li>
-                    <li><a href="#">Login</a></li>
-              </ul>';
+        echo '<div class="menuOptions" id-="menuOptions">
+                <a href="main.php" class="active">Home</a>
+                <a href="aboutUs.php">About Us</a>
+                <a href="#">Favourites</a>
+                <a href="#">Login</a>
+                </div>';
     }
     
-    //blah
     
     function getGallerySQL() {
         $sql = 'SELECT GalleryID, GalleryName, GalleryNativeName, GalleryCity, GalleryCountry, Latitude, Longitude, GalleryWebSite FROM Galleries';
@@ -20,12 +20,18 @@
     
 function getAllGalleries() {
   try{
-     $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
-     $sql = 'SELECT GalleryID, GalleryName, GalleryNativeName, GalleryCity, GalleryCountry, Latitude, Longitude, GalleryWebSite FROM Galleries ORDER BY GalleryName';
-     //getGallerySQL();
-     
-     $result = runQuery($connection, $sql, null);
-     return $result;
+    $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
+    
+    if(isset($_GET['GalleryID'])){
+        $sql = 'SELECT GalleryID, GalleryName, GalleryNativeName, GalleryCity, GalleryCountry, Latitude, Longitude, GalleryWebSite FROM Galleries WHERE GalleryID= ' . $_GET['GalleryID'];
+        $result = runQuery($connection, $sql, null);
+        return $result;
+    }else{
+        $sql = 'SELECT GalleryID, GalleryName, GalleryNativeName, GalleryCity, GalleryCountry, Latitude, Longitude, GalleryWebSite FROM Galleries ORDER BY GalleryName';
+        $result = runQuery($connection, $sql, null);
+        return $result;
+    }
+
   }
   catch (PDOException $e) {
       die( $e->getMessage() );
@@ -40,7 +46,7 @@ function outputGalleries(){
 }
 
 function ouputSingleGallery($gallery){
-   echo "<li><a href='single-gallery.php?GalleryID=" . $gallery['GalleryID'] . "'>" . $gallery['GalleryName'] . "</a></li>";
+   echo "<div class='card'><a href='single-gallery.php?GalleryID=" . $gallery['GalleryID'] . "'>" . $gallery['GalleryName'] . "</a></div>";
     
 }
 
@@ -56,19 +62,29 @@ function getAllArtists(){
     }
 }
 
+
+
 function outputArtists(){
     $artists = getAllArtists();
     foreach($artists as $a){
-        echo "<div class='box " . $a['ArtistID'] . "'><a href='single-artist.php?ArtistID=" . $a['ArtistID'] . "'>" . $a['FirstName'] . " " . $a['LastName'] . "</a></div>";
+        echo "<div class='card'><a href='single-artist.php?ArtistID=" . $a['ArtistID'] . "'>" . $a['FirstName'] . " " . $a['LastName'] . "</a></div>";
     }
 }
 
 function getAllGenres(){
     try{
         $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
-        $sql = 'select GenreID, GenreName, EraID, Description from Genres';
+         if(isset($_GET['GenreID'])){
+        $sql = "select GenreID, GenreName, EraID, Description, Link from Genres where GenreID= " . $_GET['GenreID'];
         $result = runQuery($connection, $sql, null);
-     return $result;
+        return $result;
+        }
+    
+    else{
+        $sql = "select GenreID, GenreName, EraID, Description, Link from Genres";
+        $result = runQuery($connection, $sql, null);
+        return $result;
+    }
   }
   catch (PDOException $e) {
       die( $e->getMessage() );
@@ -78,38 +94,22 @@ function getAllGenres(){
 function outputGenres(){
     $genres = getAllGenres();
     foreach($genres as $g){
-        echo "<div class='box " . $g['GenreID'] . "'><a href='/php/single-genre.php?GenreID=" . $g['GenreID'] . "'>" . $g['GenreName'] . "<img src= '/images/genres/genres/square-medium/" . 
-        $g['GenreID'] . ".jpg'></a></div>";
+        echo "<figure><img src= '/images/genres/genres/square-medium/" . $g['GenreID'] . ".jpg'><figcaption>
+        <a href='/php/single-genre.php?GenreID=" . $g['GenreID'] . "'>" . $g['GenreName'] . "</a></figcaption></figure>";
+        
+        
     }
 }
 
-//i have made changes to the original function writen by Megan. this returns artist by ID but, 
-// if there is not artistID it will just return all artists.
-// btw, we have to make sure to encode the result before returning it in the functions. 
-// then when we get it in the API files, we decode it. 
-
-//oh i see
-// he covered encoding it 
-//you have to write another function decoding it?
-
-//k the file directory was wrong before i fixed it lol all g i did the same thing, luckily 
-//the error tells you alot
-
-//rn theres this error
-//ill msg you over messenger
-
-function getArtistById(){
+// This function connects to the database and  
+function getArtists(){
+    $sql = "select ArtistID, FirstName, LastName, Nationality, Gender, YearOfBirth, YearOfDeath, Details from Artists";
     if(isset($_GET['ArtistID'])){
         try{
             $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
-            $sql = "select ArtistID, FirstName, LastName, Nationality, Gender, YearOfBirth, YearOfDeath, Details from Artists where ArtistID=" . $_GET['ArtistID'];
-
+            $sql = $sql . " where ArtistID=" . $_GET['ArtistID'];
             $result = runQuery($connection, $sql, null);
-            //return $result;
-            foreach($result as $r){
-                return $r;
-                //ouputSingleArtist();
-            }
+            return $result;
         }
         catch (PDOException $e) {
             die( $e->getMessage() );
@@ -118,7 +118,6 @@ function getArtistById(){
     else {
         try{
             $connection = setConnectionInfo(DBCONNSTRING,DBUSER,DBPASS);
-            $sql = 'select ArtistID, FirstName, LastName, Nationality, Gender, YearOfBirth, YearOfDeath, Details from Artists';
             $result = runQuery($connection, $sql, null);
             return $result;
         }
@@ -128,11 +127,6 @@ function getArtistById(){
     }
 }
 
-function getArtists() {
-    try {
-        $pdo = new PDO(DB)
-    }
-}
 
 function ouputSingleArtist(){
     echo "<h1>" . $r['FirstName'] . " " . $r['LastName'] . "</h1>";
@@ -181,5 +175,7 @@ function ouputPaintingTable(){
 //     $string = json_encode(getAllGalleries());
 //     echo $string;
 // }
+
+
 
 ?>

@@ -1,5 +1,6 @@
 <?php 
-include 'functions.inc.php';
+include '../php/functions.inc.php';
+include '../php/page-functions.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,10 @@ include 'functions.inc.php';
         </div>
         
         <div class="box artist">
-            <?php getArtistById(); ?>
+            <section>
+                <?php outputArtistInfo(); ?>
+                
+            </section>
         </div>
         
         <div class = "box paintings">
@@ -35,14 +39,14 @@ include 'functions.inc.php';
                          <th id="pTitle"><a href = "">Title</a></th> 
                          <th id = "pYear"><a href = "">Year</a></th>
                      </tr>
-                     <?php outputPaintingTable(); ?>
+                     <?php //outputPaintingTable(); ?>
                  </table> 
             </section>
         </div>
         
         
     </main>
-    
+<script src="../js/single-artist.js"></script>    
 </body>
     
 </html>
